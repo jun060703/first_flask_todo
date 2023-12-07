@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/style.css" />
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>TodoList</header>
+        <div class="inputField">
+            <input type="text" id="addValue" placeholder="할 일 추가하기" autofocus />
+            <button type="button" id="btn" onclick="addTodo()"><i class="xi-plus xi-2x"></i></button>
+        </div>
+        <div>
+            <ul id="addTodo" class="Todolist">
+            </ul>
+        </div>
+        <div class="footer">
+            <button class="fake" id="fakeButton">모두 삭제</button>
+        </div>
+    </div>
+    <script>
+        const btn = document.getElementById('btn');
+        const addValue = document.getElementById('addValue');
+        const addTodoList = document.getElementById('addTodo');
+        const fakeButton = document.getElementById('fakeButton');
+
+        window.onload = function () {
+            loadTodos();
+        };
+
+        function addTodo() {
+            let list = document.createElement("li");
+            list.innerHTML = addValue.value;
+            addTodoList.appendChild(list);
+            addValue.value = '';
+
+
+            saveTodos();
+        }
+
+        fakeButton.addEventListener('click', function () {
+            alert("안지워짐 ㅋ")
+        });
+
+        function loadTodos() {
+            const savedTodos = localStorage.getItem('todos');
+            if (savedTodos) {
+                const todoItems = savedTodos.split(',');
+                todoItems.forEach(todo => {
+                    let list = document.createElement("li");
+                    list.innerHTML = todo;
+                    addTodoList.appendChild(list);
+                });
+            }
+        }
+        function saveTodos() {
+
+            const todoItems = Array.from(addTodoList.children).map(li => li.innerHTML);
+            localStorage.setItem('todos', todoItems.join(','));
+        }//새로고침해도 안사라짐
+    </script>
+</body>
+
+</html>
